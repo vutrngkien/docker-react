@@ -1,0 +1,24 @@
+# to avoid run really long docker run command like this
+# Docker run -p 3000:3000 -v /app/node_modules -v $(pwd):/app imageId
+# insted we can use docker compose
+
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app
+  tests:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+# to override command from dockerfile
+    command: ['npm', 'run', 'test']
